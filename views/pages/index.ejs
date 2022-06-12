@@ -1,0 +1,59 @@
+<%- include('../partials/head'); %>
+
+  <%- include('../partials/navbar'); %>
+
+  <section class="container bg-success bg-opacity-25 mx-auto my-5 p-5 text-center shadow rounded-5">
+    <h1 class="display-3 border-dark border-bottom border-2 pb-3">Bine ai venit la BioAgro!</h1>
+    <p class="display-6 pt-3">Aici poti comanda produse de calitate la producatori autohtoni!</p>
+  </section>
+
+  <section class="container bg-success bg-opacity-25 d-flex flex-column align-items-center bg-success p-3 my-5 rounded-5 shadow">
+    <button 
+      id="add_category" 
+      class="rounded-4 p-3 m-2 bg-white shadow-sm border-0"
+    >Adauga o categorie</button>
+    <form action="/" method="post" id="form_category" class="flex-row align-items-center">
+      <input 
+        type="text"
+        name="categoryName"
+        id="categoryName" 
+        class="p-3 rounded-4 border-0 shadow-sm"
+        placeholder="Adauga categoria"
+      >
+      <button 
+        id="process_category"
+        class="rounded-4 p-3 m-2 shadow-sm border-0 bg-white"
+      >Adauga</button>
+    </form>
+  </section>
+
+  <section class="d-flex flex-row flex-wrap justify-content-around align-items-center">
+    <% categories.forEach(function(category){ %>
+      <a 
+        href="/category/<%= category._id; %>" class="text-decoration-none text-black bg-success bg-opacity-10 d-flex flex-column justify-content-between align-items-center py-3 px-5 m-3 rounded-4 shadow-sm"
+      >
+        <div class="<% if(category.products.length > 0){ %>border-bottom<% } %> border-dark border-2 d-flex flex-column align-items-center w-50">
+          <h3 id="item_category_title" class="display-5"><%= category.categoryName; %></h3>
+          <p class="mb-1"><%= category.products.length; %> produse</p>
+        </div>
+        <% if(category.products.length > 0){ %>
+        <div class="d-flex flex-row flex-nowrap justify-content-between mt-3">
+            <% for(let i = 0; i <= 2; i++){ %>
+              <% if(!category.products[i]){ %>
+                <% break; %>
+              <% } else { %>
+                <div class="shadow-sm m-2 p-2 rounded-3 d-flex flex-column align-items-center justify-content-center">
+                  
+                  <h5 class="border-bottom border-2 border-dark w-75 text-center pb-2"><%= category.products[i].productName %></h5>
+                  <p class="mb-1">Ora publicarii: <%= publicHour(category.products[i].createdAt) %></p>
+                  <p class="mb-1">Data publicarii: <%= publicDate(category.products[i].createdAt) %></p>
+                </div>
+              <% } %>
+            <% } %>
+        </div>
+        <% } %>
+      </a>
+    <% }); %>
+  </section>
+
+<%- include('../partials/footer'); %>
