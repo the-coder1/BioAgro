@@ -5,6 +5,10 @@
   display: flex;
 }
 
+input:focus, textarea:focus {
+  outline: none;
+}
+
 /* --- style upload_photo --- */
 .element {
   position: relative;

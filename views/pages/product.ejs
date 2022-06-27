@@ -2,11 +2,14 @@
 
   <%- include('../partials/navbar'); %>
 
-  <% category.products.forEach(function(product){ %>
+  <% category.products.forEach(product => { %>
     <% if(id == product._id){ %>
       <div class="container bg-success bg-opacity-25 d-flex flex-column align-items-center bg-success text-start p-3 my-5 rounded-5 shadow">
         <div id="info_product" class="flex-column align-items-center w-100">
           <h5 class="display-3 border-bottom border-dark border-2 pb-3 ps-3 mb-3 w-75"><%= product.productName %></h5>
+
+          <img src="<%= product.image %>" width="100" height="100">
+
           <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4">Brand: <%= product.brand %></p>
           <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4">Categorie: <%= product.productCategory %></p>
           <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4">Pret: <%= product.price %> RON / KG</p>

@@ -51,7 +51,7 @@ const createCategory = async (req, res) => {
       res.render('pages/error', { error: 'Categoria este deja adaugata!' })
     } else {
       let category = await new Category({
-        categoryName: categoryName
+        categoryName: categoryName[0].toUpperCase() + categoryName.slice(1).toLowerCase()
       })
     
       category = await category.save()
@@ -90,7 +90,7 @@ const updateCategory = async (req, res) => {
   const { categoryName } = req.body
 
   const category = await Category.findByIdAndUpdate(req.params.id, {
-    categoryName: categoryName
+    categoryName: categoryName[0].toUpperCase() + categoryName.slice(1).toLowerCase()
   })
 
   if(categoryName){

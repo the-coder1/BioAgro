@@ -2,20 +2,20 @@ import Category from "../models/categoryModel.js"
 
 // PRODUCT
 const createProduct = async (req, res) => {
-  const { nameProduct, brandProduct, imageProduct, priceProduct, contactProduct, infoProduct } = req.body
+  const { nameProduct, brandProduct, priceProduct, contactProduct, infoProduct } = req.body
 
   const category = await Category.findById(req.params.id)
 
   if(nameProduct && brandProduct && priceProduct && contactProduct && infoProduct){
     if(category){
       const product = {
-        productName: nameProduct,
-        brand: brandProduct,
-        image: imageProduct,
+        productName: nameProduct[0].toUpperCase() + nameProduct.slice(1).toLowerCase(),
+        brand: brandProduct[0].toUpperCase() + brandProduct.slice(1).toLowerCase(),
+        image: req.file.filename,
         productCategory: category.categoryName,
         price: priceProduct,
         contact: contactProduct,
-        description: infoProduct
+        description: infoProduct[0].toUpperCase() + infoProduct.slice(1).toLowerCase()
       }
   
       category.products.push(product);
@@ -65,11 +65,11 @@ const updateProduct = async (req, res) => {
   
   if(nameProduct && brandProduct && priceProduct && contactProduct && infoProduct){
     if(category){
-      category.products[0].productName = nameProduct
-      category.products[0].brand = brandProduct
+      category.products[0].productName = nameProduct[0].toUpperCase() + nameProduct.slice(1).toLowerCase()
+      category.products[0].brand = brandProduct[0].toUpperCase() + brandProduct.slice(1).toLowerCase()
       category.products[0].price = priceProduct
       category.products[0].contact = contactProduct
-      category.products[0].description = infoProduct
+      category.products[0].description = infoProduct[0].toUpperCase() + infoProduct.slice(1).toLowerCase()
   
       await category.save()
   

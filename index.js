@@ -23,6 +23,7 @@ app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
 app.use(express.static(path.join(__dirname, 'src')))
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'uploads')))
 
 
 // Middlewares for parsing data and load resources
