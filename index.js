@@ -1,3 +1,8 @@
+// Config values
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 // Move to the directories
 import path, { dirname } from 'path'
 import { fileURLToPath } from "url"
@@ -27,12 +32,11 @@ app.use(express.static(path.join(__dirname, 'uploads')))
 
 
 // Middlewares for parsing data and load resources
-import bodyParser from 'body-parser'
 import cors from 'cors'
 
-app.use(express.urlencoded({extended: true}))
 app.use(cors())
-app.use(bodyParser.json())
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 
 
 // Run the app
@@ -46,6 +50,6 @@ import categoryRoute from './routes/categoryRoute.js'
 import productRoute from './routes/productRoute.js'
 import errorRoute from './routes/errorRoute.js'
 
-app.use(categoryRoute)
-app.use(productRoute)
-app.use(errorRoute)
+app.use('/', categoryRoute)
+app.use('/', productRoute)
+app.use('/', errorRoute)

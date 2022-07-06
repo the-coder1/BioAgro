@@ -33,25 +33,69 @@ const getCategories = async (req, res) => {
     return hour + ':' + minute;
   }
 
-  res.render('pages/index', {
+  res.render('pages', { 
+    page: 'main',
     categories,
-    publicDate, 
-    publicHour
+    publicDate,
+    publicHour,
+    error: {},
+    valueCategory: ''
   })
 }
 
 const createCategory = async (req, res) => {
   const { categoryName } = req.body
+  const categories = await Category.find()
 
-  const categoryExists = await Category.findOne({ categoryName })
+  function publicDate(date){
+    let day = date.getDay()
+    let month = date.getMonth()
+    let year = date.getFullYear()
+
+    if(day < 10){
+      day = '0' + day
+    }
+    if(month < 10){
+      month = '0' + month
+    }
+    
+    return day + '-' + month + '-' + year;
+  }
+
+  function publicHour(date){
+    let minute = date.getMinutes()
+    let hour = date.getHours()
+
+    if(minute < 10){
+      minute = '0' + minute
+    }
+    if(hour < 10){
+      hour = '0' + hour
+    }
+
+    return hour + ':' + minute;
+  }
 
   if(categoryName){
+    const processCategoryName = categoryName[0].toUpperCase() + categoryName.slice(1).toLowerCase()
+
+    const categoryExists = await Category.findOne({ categoryName: processCategoryName })
+
     if(categoryExists){
       res.status(400)
-      res.render('pages/error', { error: 'Categoria este deja adaugata!' })
+      res.render('pages', { 
+        page: 'main',
+        categories,
+        publicDate,
+        publicHour,
+        error: {
+          category: 'Categoria este deja adaugata!'
+        },
+        valueCategory: categoryName
+      })
     } else {
       let category = await new Category({
-        categoryName: categoryName[0].toUpperCase() + categoryName.slice(1).toLowerCase()
+        categoryName: processCategoryName
       })
     
       category = await category.save()
@@ -59,7 +103,16 @@ const createCategory = async (req, res) => {
     }
   } else {
     res.status(400)
-    res.render('pages/error', { error: 'Te rugam introdu o categorie!' })
+    res.render('pages', { 
+      page: 'main',
+      categories,
+      publicDate,
+      publicHour,
+      error: {
+        category: 'Te rugam introdu o categorie!'
+      },
+      valueCategory: categoryName
+    })
   }
 }
 
@@ -67,10 +120,23 @@ const getCategoryById = async (req, res) => {
   const category = await Category.findById(req.params.id)
 
   if(category) {
-    res.render(`pages/category`, { category })
+    res.render(`pages/category`, { 
+      page: 'category',
+      category,
+      error: {},
+      valueCategory: category.categoryName,
+      valueName: '',
+      valueBrand: '',
+      valueImage: '',
+      valuePrice: '',
+      valueContact: '',
+      valueDescription: ''
+    })
   } else {
     res.status(404)
-    res.render('pages/error', { error: 'Categoria nu a putut fi gasita!' })
+    res.render('pages/error', { 
+      error: 'Categoria nu a putut fi gasita!' 
+    })
   }
 }
 
@@ -88,20 +154,60 @@ const deleteCategory = async (req, res) => {
 
 const updateCategory = async (req, res) => {
   const { categoryName } = req.body
-
-  const category = await Category.findByIdAndUpdate(req.params.id, {
-    categoryName: categoryName[0].toUpperCase() + categoryName.slice(1).toLowerCase()
-  })
+  const category = await Category.findById(req.params.id)
 
   if(categoryName){
-    if(!category) {
-      res.status(400)
-      res.render('pages/error', { error: 'Categoria nu a putut fi schimbata!' })
-    }
+    const processCategoryName = categoryName[0].toUpperCase() + categoryName.slice(1).toLowerCase()
 
-    res.redirect(`/category/${category._id}`)
+    const categoryUpdateExists = await Category.findOne({ categoryName: processCategoryName })
+
+    if(categoryUpdateExists){
+      res.status(400)
+      res.render('pages/category', { 
+        page: 'category',
+        category,
+        error: {
+          updateCategory: 'Categoria este deja adaugata!'
+        },
+        valueCategory: processCategoryName,
+        valueName: '',
+        valueBrand: '',
+        valueImage: '',
+        valuePrice: '',
+        valueContact: '',
+        valueDescription: ''
+      })
+    } else {
+      const categoryUpdate = await Category.findByIdAndUpdate(req.params.id, {
+        categoryName: processCategoryName
+      })
+      
+      if(!categoryUpdate) {
+        res.status(400)
+        res.render('pages/error', { 
+          error: {
+            updateCategory: 'Categoria nu a putut fi schimbata!' 
+          },
+        })
+      }
+      
+      res.redirect(`/category/${category._id}`)
+    }
   } else {
-    res.render('pages/error', { error: 'Completeaza formularul pentru a actualiza categoria!' })
+    res.render('pages/category', { 
+      page: 'category',
+      category,
+      error: {
+        updateCategory: 'Completeaza formularul pentru a actualiza categoria!'
+      },
+      valueCategory: categoryName,
+      valueName: '',
+      valueBrand: '',
+      valueImage: '',
+      valuePrice: '',
+      valueContact: '',
+      valueDescription: ''
+    })
   }
 }
 

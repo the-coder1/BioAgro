@@ -14,11 +14,11 @@ router
   .get(getCategoryById)
 
 router
-  .route('/deleteCategory/:id')
+  .route('/delete_category/:id')
   .post(deleteCategory)
 
 router
-  .route('/updateCategory/:id')
+  .route('/update_category/:id')
   .post(updateCategory)
 
 export default router

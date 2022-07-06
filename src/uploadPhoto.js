@@ -1,5 +1,14 @@
 function viewPhoto(id){
-  document.querySelector(`#${id}`).addEventListener('change', (e) => {
+  const inputImage = document.querySelector(`#${id}`)
+  const valueInputImage = inputImage.attributes.value.nodeValue
+
+  if(valueInputImage !== '/' ){
+    let urlExists = valueInputImage
+
+    document.querySelector(`#${id}-preview img`).src = urlExists
+  }
+  
+  inputImage.addEventListener('change', (e) => {
     if(e.target.files == 0){
       return
     }

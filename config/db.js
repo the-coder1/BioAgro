@@ -1,9 +1,8 @@
 import mongoose from "mongoose"
-const MONGO_URI = "mongodb+srv://digitalexplorer:digitalexplorer@test-explorer.bjxxi.mongodb.net/?retryWrites=true&w=majority"
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(MONGO_URI, {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
       useUnifiedTopology: true,
       useNewUrlParser: true
     })

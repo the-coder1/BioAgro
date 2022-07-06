@@ -12,6 +12,11 @@
       id="add_category" 
       class="rounded-4 p-3 m-2 bg-white shadow-sm border-0"
     >Adauga o categorie</button>
+
+    <% if(typeof(error.category) != 'undefined' && error.category != null){ %>
+      <p id="error" class="mb-1 mt-2 text-danger fw-bold fs-6"><%= error.category; %></p>
+    <% } %>
+
     <form action="/" method="post" id="form_category" class="flex-row align-items-center">
       <input 
         type="text"
@@ -19,6 +24,7 @@
         id="categoryName" 
         class="p-3 rounded-4 border-0 shadow-sm"
         placeholder="Adauga categoria"
+        value=<%= valueCategory; %>
       >
       <button 
         id="process_category"
