@@ -1,4 +1,3 @@
-import { verify } from 'crypto'
 import fs from 'fs'
 import Category from "../models/categoryModel.js"
 
@@ -30,40 +29,10 @@ const createProduct = async (req, res) => {
       }
     
       category.products.push(product);
-      const lengthProducts = category.products.length
-
-      const searchImage = await Category.findOne()
-
-      fs.readdir('./uploads', (err, files) => {
-        let deleteImage = ''
-        let verify = 0
-
-        if(searchImage.products.length !== 0){
-          for(const product of searchImage.products){
-            for(const file of files) {
-              if(file !== product.image){
-                deleteImage = file
-              } else {
-                deleteImage = ''
-                verify = verify + 1
-              }
-              console.log(deleteImage)
-
-              if(verify !== 0 && deleteImage !== '' && deleteImage !== imageProduct){
-                fs.unlinkSync(`./uploads/${deleteImage}`)
-              }
-            }
-          }
-        } else {
-          for(const file of files){
-            if(file !== imageProduct){
-              fs.unlinkSync(`./uploads/${file}`)
-            }
-          }
-        }
-      })
 
       await category.save()
+      const lengthProducts = category.products.length
+
       res.redirect(`/product/${category.products[lengthProducts - 1]._id}`)
     } else {
       res.status(400)
@@ -95,16 +64,44 @@ const createProduct = async (req, res) => {
 
 const getProductById = async (req, res) => {
   const { id } = req.params
-  const category = await Category.findOne({ product: id })
+  const category = await Category.find()
+
+  const categories = await Category.find()
+  await fs.readdir('./uploads', (err, files) => {
+    files.forEach(file => {
+      let keepImage = ''
+
+      categories.forEach(item => {
+        item.products.forEach(product => {
+          if(file === product.image){
+            keepImage = file
+          }
+        })
+      })
+
+      if(keepImage === ''){
+        fs.unlinkSync(`./uploads/${file}`)
+      }
+    })
+  })
+
+  let showProduct = ''
+  category.forEach(item => {
+    item.products.forEach(product => {
+      if(product._id == id){
+        showProduct = product
+      }
+    })
+  })
 
   if(category) {
     res.render(`pages/product`, {
       page: 'product', 
-      category, 
-      id,
+      showProduct,
       error: {},
       valueName: '',
       valueBrand: '',
+      valueImage: '',
       valuePrice: '',
       valueContact: '',
       valueDescription: ''
@@ -117,12 +114,8 @@ const getProductById = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   const category = await Category.findOne({ product: req.params.id })
-  
-  const deleteImage = category.products[0].image
 
   if(category){
-    fs.unlinkSync(`./uploads/${deleteImage}`)
-
     await category.products[0].remove()
     await category.save()
     res.redirect(`/category/${category._id}`)
@@ -136,39 +129,46 @@ const updateProduct = async (req, res) => {
   const { id } = req.params
   const { nameProduct, brandProduct, priceProduct, contactProduct, infoProduct } = req.body
 
-  const category = await Category.findOne({ product: id })
-  const deleteImage = category.products[0].image
+  let showProduct = ''
+  const category = await Category.find()
+  category.forEach(item => {
+    item.products.forEach(product => {
+      if(product._id == id){
+        showProduct = product
+      }
+    })
+  })
+
   
   if(nameProduct && brandProduct && priceProduct && contactProduct && infoProduct){
     if(category){
-      category.products[0].productName = nameProduct[0].toUpperCase() + nameProduct.slice(1).toLowerCase()
-      category.products[0].brand = brandProduct[0].toUpperCase() + brandProduct.slice(1).toLowerCase()
-      category.products[0].price = priceProduct
-      category.products[0].contact = contactProduct
-      category.products[0].description = infoProduct[0].toUpperCase() + infoProduct.slice(1).toLowerCase()
+      showProduct.productName = nameProduct[0].toUpperCase() + nameProduct.slice(1).toLowerCase()
+      showProduct.brand = brandProduct[0].toUpperCase() + brandProduct.slice(1).toLowerCase()
+      showProduct.price = priceProduct
+      showProduct.contact = contactProduct
+      showProduct.description = infoProduct[0].toUpperCase() + infoProduct.slice(1).toLowerCase()
   
-      if(!category.products[0]){
+      if(!showProduct){
         res.status(400)
         res.render('pages/error', { error: 'Actualizarea acestui produs nu se poate executa!' })
       }
 
       if(req.file){
-        category.products[0].image = req.file.filename
-        
-        fs.unlinkSync(`./uploads/${deleteImage}`)
+        showProduct.image = req.file.filename
+        await category.forEach(item => {
+          item.save()
+        })
       }
-
-      await category.save()
   
-      res.redirect(`/product/${category.products[0]._id}`)
+      res.redirect(`/product/${showProduct._id}`)
     }
   } else {
     res.render('pages/product', {
       page: 'product',
-      category,
-      id,
+      showProduct,
       valueName: nameProduct,
       valueBrand: brandProduct,
+      valueImage: req.file,
       valuePrice: priceProduct,
       valueContact: contactProduct,
       valueDescription: infoProduct,

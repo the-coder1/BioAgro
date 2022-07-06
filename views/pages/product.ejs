@@ -2,27 +2,25 @@
 
   <%- include('../partials/navbar'); %>
 
-  <% category.products.forEach(product => { %>
-    <% if(id == product._id){ %>
       <div class="container bg-success bg-opacity-25 d-flex flex-column align-items-center bg-success text-start p-3 my-5 rounded-5 shadow">
 
         <div id="info_product" class="flex-column align-items-center w-100">
-          <h5 class="display-3 border-bottom border-dark border-2 pb-3 ps-3 mb-3 w-75"><%= product.productName %></h5>
+          <h5 class="display-3 border-bottom border-dark border-2 pb-3 ps-3 mb-3 w-75"><%= showProduct.productName %></h5>
 
           <img 
-            src="/<%= product.image %>" 
+            src="/<%= showProduct.image; %>"
             class="img-fluid rounded-3 shadow-sm w-75 my-2"
           >
 
-          <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4 my-2">Brand: <%= product.brand %></p>
-          <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4 my-2">Categorie: <%= product.productCategory %></p>
-          <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4 my-2">Pret: <%= product.price %> RON / KG</p>
-          <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4 my-2">Contact: <%= product.contact %></p>
-          <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4 my-2">Descriere: <%= product.description %></p>
+          <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4 my-2">Brand: <%= showProduct.brand %></p>
+          <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4 my-2">Categorie: <%= showProduct.productCategory %></p>
+          <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4 my-2">Pret: <%= showProduct.price %> RON / KG</p>
+          <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4 my-2">Contact: <%= showProduct.contact %></p>
+          <p class="shadow-sm bg-success bg-gradient bg-opacity-50 w-75 p-3 rounded-4 my-2">Descriere: <%= showProduct.description %></p>
         </div>
 
         <form 
-          action="/update_product/<%= category.products[0]._id %>" 
+          action="/update_product/<%= showProduct._id %>" 
           method="post" 
           enctype="multipart/form-data"
           id="form_edit_product"
@@ -38,10 +36,10 @@
             class="p-3 my-2 rounded-4 border-0 shadow-sm" 
             name="nameProduct"
             placeholder="Adauga numele produsului"
-            <% if(error.nameProduct){ %>
+            <% if(error.brandProduct){ %>
               value="<%= valueName; %>"
             <% } else { %>
-              value="<%= category.products[0].productName; %>"
+              value="<%= showProduct.productName; %>"
             <% } %>
           >
 
@@ -52,7 +50,11 @@
               id="imageProduct"
               accept="image/*"
               class="d-none"
-              value="/<%= category.products[0].image %>"
+              <% if(valueImage !== ''){ %>
+                value="/<%= valueImage.filename; %>"
+              <% } else { %>
+                value="/<%= showProduct.image; %>"
+              <% } %> 
             >
             <label 
               for="imageProduct" 
@@ -84,7 +86,7 @@
             <% if(error.brandProduct){ %>
               value="<%= valueBrand; %>"
             <% } else { %>
-              value="<%= category.products[0].brand; %>"
+              value="<%= showProduct.brand; %>"
             <% } %>
           >
 
@@ -100,7 +102,7 @@
             <% if(error.priceProduct){ %>
               value="<%= valuePrice; %>"
             <% } else { %>
-              value="<%= category.products[0].price; %>"
+              value="<%= showProduct.price; %>"
             <% } %>
           >
 
@@ -116,7 +118,7 @@
             <% if(error.contactProduct){ %>
               value="<%= valueContact; %>"
             <% } else { %>
-              value="<%= category.products[0].contact; %>"
+              value="<%= showProduct.contact; %>"
             <% } %>
           >
 
@@ -128,7 +130,7 @@
             class="p-3 my-2 rounded-4 border-0 shadow-sm"
             name="infoProduct" 
             placeholder="Descrieti produsul"
-          ><% if(error.infoProduct){ %><%= valueDescription; %><% } else { %><%= category.products[0].description; %><% } %></textarea>
+          ><% if(error.infoProduct){ %><%= valueDescription; %><% } else { %><%= showProduct.description; %><% } %></textarea>
 
           <button 
             class="rounded-4 p-3 m-2 bg-white shadow-sm border-0"
@@ -146,7 +148,7 @@
           </button>
 
           <form 
-            action="/delete_product/<%= category.products[0]._id %>" 
+            action="/delete_product/<%= showProduct._id %>" 
             method="post" 
             id="delete_product"
           >
@@ -158,7 +160,6 @@
           </form>
         </div>
       </div>
-    <% } %>
-  <% }); %>
+  
 
 <%- include('../partials/footer'); %>

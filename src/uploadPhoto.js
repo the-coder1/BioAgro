@@ -1,6 +1,6 @@
 function viewPhoto(id){
   const inputImage = document.querySelector(`#${id}`)
-  const valueInputImage = inputImage.attributes.value.nodeValue
+  valueInputImage = inputImage.attributes.value.nodeValue
 
   if(valueInputImage !== '/' ){
     let urlExists = valueInputImage

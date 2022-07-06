@@ -1,8 +1,27 @@
+import fs from 'fs'
 import Category from "../models/categoryModel.js"
 
 // CATEGORY
 const getCategories = async (req, res) => {
   const categories = await Category.find()
+
+  await fs.readdir('./uploads', (err, files) => {
+    files.forEach(file => {
+      let keepImage = ''
+
+      categories.forEach(item => {
+        item.products.forEach(product => {
+          if(file === product.image){
+            keepImage = file
+          }
+        })
+      })
+
+      if(keepImage === ''){
+        fs.unlinkSync(`./uploads/${file}`)
+      }
+    })
+  })
 
   function publicDate(date){
     let day = date.getDay()
@@ -118,6 +137,25 @@ const createCategory = async (req, res) => {
 
 const getCategoryById = async (req, res) => {
   const category = await Category.findById(req.params.id)
+  
+  const categories = await Category.find()
+  await fs.readdir('./uploads', (err, files) => {
+    files.forEach(file => {
+      let keepImage = ''
+
+      categories.forEach(item => {
+        item.products.forEach(product => {
+          if(file === product.image){
+            keepImage = file
+          }
+        })
+      })
+
+      if(keepImage === ''){
+        fs.unlinkSync(`./uploads/${file}`)
+      }
+    })
+  })
 
   if(category) {
     res.render(`pages/category`, { 
