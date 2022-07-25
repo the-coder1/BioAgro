@@ -1,0 +1,11 @@
+  <% if(typeof(page) != 'undefined' && page != null && page === 'main'){ %>
+    <script src="/mainPage.js"></script>
+  <% } else if(typeof(page) != 'undefined' && page != null && page === 'category'){ %>
+    <script src="/categoryPage.js"></script>
+    <script src="/uploadPhoto.js"></script>
+  <% } else if(typeof(page) != 'undefined' && page != null && page === 'product'){ %>
+    <script src="/productPage.js"></script>
+    <script src="/uploadPhoto.js"></script>
+  <% } %>  
+</body>
+</html>
