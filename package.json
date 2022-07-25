@@ -6,16 +6,19 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "deploy": "gh-pages -d views"
   },
   "author": "",
   "license": "ISC",
+  "homepage": "https://the-coder1.github.io/BioAgro/",
   "dependencies": {
     "bootstrap": "^5.2.0-beta1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
+    "gh-pages": "^4.0.0",
     "mongoose": "^6.3.5",
     "multer": "^1.4.5-lts.1"
   },

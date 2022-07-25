@@ -57,5 +57,5 @@ input:focus, textarea:focus {
   transform: rotate(0deg) translate(0px, 4px);
 }
 .line2{
-transform: rotate(90deg) translate(-3px, 0px);
+  transform: rotate(90deg) translate(-3px, 0px);
 }
