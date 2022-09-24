@@ -7,7 +7,7 @@ const createProduct = async (req, res) => {
 
   const category = await Category.findById(req.params.id)
 
-  const imageProduct = req?.file.filename
+  const imageProduct = req.file.filename || ""
   console.log(imageProduct)
 
   if(category){
