@@ -4,11 +4,11 @@ import Category from "../models/categoryModel.js"
 // PRODUCT
 const createProduct = async (req, res) => {
   const { nameProduct, brandProduct, priceProduct, contactProduct, infoProduct } = req.body
-  let imageProduct = ''
 
   const category = await Category.findById(req.params.id)
-  
-  imageProduct = req?.file.filename
+
+  const imageProduct = req?.file.filename
+  console.log(imageProduct)
 
   if(category){
     if(nameProduct !== '' && brandProduct !== '' && priceProduct !== '' && contactProduct !== '' && infoProduct !== '' && imageProduct !== ''){
