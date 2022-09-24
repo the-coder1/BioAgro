@@ -6,12 +6,10 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "deploy": "gh-pages -d views"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://the-coder1.github.io/BioAgro/",
   "dependencies": {
     "bootstrap": "^5.2.0-beta1",
     "cors": "^2.8.5",
