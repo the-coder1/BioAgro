@@ -40,7 +40,7 @@ app.use(express.urlencoded({extended: true}))
 
 
 // Run the app
-app.listen(port || 3001, () => {
+app.listen(port || 5000, () => {
   console.log(`App listening on port ${port}`)
 })
 
