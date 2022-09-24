@@ -7,9 +7,8 @@ const createProduct = async (req, res) => {
 
   const category = await Category.findById(req.params.id)
 
-  const imageProduct = req.file.filename || ""
-  console.log(imageProduct)
-
+  const imageProduct = req?.file?.filename || ""
+  
   if(category){
     if(nameProduct !== '' && brandProduct !== '' && priceProduct !== '' && contactProduct !== '' && infoProduct !== '' && imageProduct !== ''){
       const processNameProduct = nameProduct[0].toUpperCase() + nameProduct.slice(1).toLowerCase()
