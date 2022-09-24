@@ -139,8 +139,8 @@ const getCategoryById = async (req, res) => {
   const category = await Category.findById(req.params.id)
   
   const categories = await Category.find()
-  await fs.readdir('./uploads', (err, files) => {
-    files.forEach(file => {
+  fs.readdir('./uploads', (err, files) => {
+    files?.forEach(file => {
       let keepImage = ''
 
       categories.forEach(item => {

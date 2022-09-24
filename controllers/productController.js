@@ -67,8 +67,8 @@ const getProductById = async (req, res) => {
   const category = await Category.find()
 
   const categories = await Category.find()
-  await fs.readdir('./uploads', (err, files) => {
-    files.forEach(file => {
+  fs.readdir('./uploads', (err, files) => {
+    files?.forEach(file => {
       let keepImage = ''
 
       categories.forEach(item => {
@@ -155,7 +155,7 @@ const updateProduct = async (req, res) => {
 
       if(req.file){
         showProduct.image = req.file.filename
-        await category.forEach(item => {
+        category.forEach(item => {
           item.save()
         })
       }
