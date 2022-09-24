@@ -6,10 +6,10 @@ const getCategories = async (req, res) => {
   const categories = await Category.find()
 
   fs.readdir('./uploads', (err, files) => {
-    files.forEach(file => {
+    files?.forEach(file => {
       let keepImage = ''
 
-      categories?.forEach(item => {
+      categories.forEach(item => {
         item.products.forEach(product => {
           if(file === product.image){
             keepImage = file
