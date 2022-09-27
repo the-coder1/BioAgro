@@ -8,6 +8,7 @@ const createProduct = async (req, res) => {
   const category = await Category.findById(req.params.id)
 
   const imageProduct = req?.file?.filename || ""
+  // console.log(req?.file)
   
   if(category){
     if(nameProduct !== '' && brandProduct !== '' && priceProduct !== '' && contactProduct !== '' && infoProduct !== '' && imageProduct !== ''){
